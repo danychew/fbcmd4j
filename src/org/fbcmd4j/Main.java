@@ -79,10 +79,12 @@ public class Main {
 						String link = scan.nextLine();
 						Utils.postLink(link, fb);
 						break;
+
 					case 5:
 						System.out.println("Gracias por usar el cliente!");
 						System.exit(0);
 						break;
+
 					default:
 						break;
 					}
