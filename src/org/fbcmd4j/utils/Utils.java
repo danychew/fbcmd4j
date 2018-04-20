@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.auth.AccessToken;
 import facebook4j.Post;
+import facebook4j.ResponseList;
 import facebook4j.internal.org.json.JSONObject;
 
 public class Utils {
@@ -165,5 +167,90 @@ public class Utils {
 		
 		return fb;
 	}
+	
+	public static void askToSaveFile(String fileName, ResponseList<Post> posts, Scanner scan) {
+		System.out.println("Guardar resultados en un archivo de texto? Si/No");
+		String option = scan.nextLine();
+		
+		if (option.contains("Si") || option.contains("si")) {
+			List<Post> ps = new ArrayList<>();
+			int n = 0;
+
+			while(n <= 0) {
+				try {
+					System.out.println("Cuántos posts deseas guardar?");
+					n = Integer.parseInt(scan.nextLine());					
+			
+					if(n <= 0) {
+						System.out.println("Favor de ingresar un número válido");
+					} else {
+						for(int i = 0; i<n; i++) {
+							if(i>posts.size()-1) break;
+							ps.add(posts.get(i));
+						}
+					}
+				} catch(NumberFormatException e) {
+					logger.error(e);
+				}
+			}
+
+			savePostsToFile(fileName, ps);
+		}
+	}
+	public static String savePostsToFile(String fileName, List<Post> posts) {
+		File file = new File(fileName + ".txt");
+
+		try {
+    		if(!file.exists()) {
+    			file.createNewFile();
+            }
+
+    		FileOutputStream fos = new FileOutputStream(file);
+			for (Post p : posts) {
+				String msg = "";
+				if(p.getStory() != null)
+					msg += "Story: " + p.getStory() + "\n";
+				if(p.getMessage() != null)
+					msg += "Mensaje: " + p.getMessage() + "\n";
+				msg += "--------------------------------\n";
+				fos.write(msg.getBytes());
+			}
+			fos.close();
+
+			logger.info("Posts guardados en el archivo '" + file.getName() + "'.");
+			System.out.println("Posts guardados exitosamente en '" + file.getName() + "'.");
+		} catch (IOException e) {
+			logger.error(e);
+		}
+        
+        return file.getName();
+	}	
+
+	public static void printPost(Post p) {
+		if(p.getStory() != null)
+			System.out.println("Story: " + p.getStory());
+		if(p.getMessage() != null)
+			System.out.println("Mensaje: " + p.getMessage());
+		System.out.println("--------------------------------");
+	}
+	
+	public static void postStatus(String msg, Facebook fb) {
+		try {
+			fb.postStatusMessage(msg);
+		} catch (FacebookException e) {
+			logger.error(e);
+		}		
+	}
+	
+	public static void postLink(String link, Facebook fb) {
+		try {
+			fb.postLink(new URL(link));
+		} catch (MalformedURLException e) {
+			logger.error(e);
+		} catch (FacebookException e) {
+			logger.error(e);
+		}
+	}
+	
 	
 }
