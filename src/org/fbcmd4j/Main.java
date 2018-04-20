@@ -61,14 +61,14 @@ public class Main {
 						}
 						Utils.askToSaveFile("NewsFeed", newsFeed, scan);
 						break;
-//					case 2:
-//						System.out.println("Mostrando Wall...");
-//						ResponseList<Post> wall = fb.getPosts();
-//						for (Post p : wall) {
-//							Utils.printPost(p);
-//						}		
-//						Utils.askToSaveFile("Wall", wall, scan);
-//						break;
+					case 2:
+						System.out.println("Mostrando Wall...");
+						ResponseList<Post> wall = fb.getPosts();
+						for (Post p : wall) {
+							Utils.printPost(p);
+						}		
+						Utils.askToSaveFile("Wall", wall, scan);
+						break;
 //					case 3:
 //						System.out.println("Escribe tu estado: ");
 //						String estado = scan.nextLine();
