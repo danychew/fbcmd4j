@@ -69,11 +69,11 @@ public class Main {
 						}		
 						Utils.askToSaveFile("Wall", wall, scan);
 						break;
-//					case 3:
-//						System.out.println("Escribe tu estado: ");
-//						String estado = scan.nextLine();
-//						Utils.postStatus(estado, fb);
-//						break;
+					case 3:
+						System.out.println("Escribe tu estado: ");
+						String estado = scan.nextLine();
+						Utils.postStatus(estado, fb);
+						break;
 //					case 4:
 //						System.out.println("Ingresa el link: ");
 //						String link = scan.nextLine();
